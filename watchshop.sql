@@ -341,30 +341,3 @@ INSERT INTO REPAIR (repair_id, warranty_id, received_date, issue, repair_cost, s
 (2, 6, '2026-11-09', 'Touchscreen unresponsive',     0.00,   'In Progress', NULL),
 (3, 1, '2026-11-12', 'Strap replacement (not covered)', 800.00, 'Received', NULL);
 
--- =====================================================================
--- 3. SAMPLE QUERIES (useful for the in-class demonstration)
--- =====================================================================
-
--- Q1: Full invoice view: sale, customer, salesperson, items
--- SELECT s.sale_id, c.customer_name, u.full_name AS salesperson, w.model_name, si.serial_no, si.unit_price, s.discount, s.total_amount
--- FROM SALE s
--- JOIN CUSTOMER c   ON c.customer_id = s.customer_id
--- JOIN `USER` u     ON u.user_id = s.salesperson_id
--- JOIN SALE_ITEM si ON si.sale_id = s.sale_id
--- JOIN WATCH w      ON w.watch_id = si.watch_id
--- ORDER BY s.sale_id;
-
--- Q2: Outstanding balance per sale
--- SELECT s.sale_id, s.total_amount, IFNULL(SUM(p.amount),0) AS paid, s.total_amount - IFNULL(SUM(p.amount),0) AS due
--- FROM SALE s LEFT JOIN PAYMENT p ON p.sale_id = s.sale_id
--- GROUP BY s.sale_id, s.total_amount;
-
--- Q3: Watches at or below reorder level
--- SELECT watch_id, model_name, stock_qty, reorder_level FROM WATCH WHERE stock_qty <= reorder_level;
-
--- Q4: Warranty and repair history
--- SELECT w.warranty_id, wt.model_name, w.status, r.issue, r.repair_cost, r.status AS repair_status
--- FROM WARRANTY w
--- JOIN SALE_ITEM si ON si.sale_item_id = w.sale_item_id
--- JOIN WATCH wt     ON wt.watch_id = si.watch_id
--- JOIN REPAIR r     ON r.warranty_id = w.warranty_id;
